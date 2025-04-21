@@ -70,9 +70,3 @@ FísicaExp | 2025 - Instagram
 ---
 
 ```
-
----
-
-Se quiser, posso gerar uma versão com link para um gráfico online, deixar ele mais técnico ou até traduzir para o inglês.
-
-Quer que eu atualize o conteúdo com base em como está sua pasta atual do GitHub? Se sim, me passa o link ou a estrutura!

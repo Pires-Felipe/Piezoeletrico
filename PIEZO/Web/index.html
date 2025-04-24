@@ -1,78 +1,74 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard de Tensão Piezoelétrica</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        body { font-family: sans-serif; margin: 20px; }
-        .container { display: flex; flex-wrap: wrap; gap: 20px; }
-        .chart-container { width: calc(50% - 10px); min-height: 300px; border: 1px solid #ccc; padding: 10px; box-sizing: border-box; }
-        .stats-container { width: 100%; border: 1px solid #ccc; padding: 10px; box-sizing: border-box; }
-    </style>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css"> 
 </head>
-<body>
-    <h1>Dashboard de Tensão Piezoelétrica</h1>
-    <div class="container">
-        <div class="chart-container">
-            <canvas id="tensaoChart"></canvas>
+<body class="font-sans p-6 text-white">
+    <div id="particles-container"></div>
+    <div class="max-w-7xl mx-auto">
+        <h1 class="text-3xl font-bold text-cyan-400 mb-8 text-center animate-fade-down">DASHBOARD PIEZOELÉTRICO  ⚡</h1>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8 voltage-section animate-fade-in">
+            <div class="bg-gray-800 p-6 rounded-2xl shadow-lg text-center lg:col-span-1 flex flex-col justify-center">
+                <div class="text-xl font-semibold text-cyan-500 mb-2 flex items-center justify-center gap-2">
+                    <i data-lucide="zap" class="w-6 h-6"></i> Tensão Instantânea
+                </div>
+                <div class="relative voltage-liquid-container h-24">
+                    <div id="voltageLiquidFill" class="voltage-liquid-fill" style="height: 80%;"></div>
+                    <div class="voltage-liquid-text pulse">8.7V</div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-1 flex flex-col justify-around">
+                <div class="bg-gray-800 p-4 rounded-2xl shadow-md flex items-center justify-center text-center relative overflow-hidden h-16">
+                    <div class="absolute top-0 left-0 w-full h-full bg-gray-700 rounded-md">
+                        <div id="batteryFill" class="battery-card-fill" style="width: 62%;"></div>
+                    </div>
+                    <div class="battery-card-inner">
+                        <div class="text-xl font-bold text-yellow-400 flex items-center gap-2">
+                            <i data-lucide="battery-charging" class="w-5 h-5"></i> Bateria
+                        </div>
+                        <div class="text-lg font-semibold text-white ml-2">
+                            <span id="batteryPercentage">62</span>%
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-2xl shadow-md flex items-center justify-center text-center statusdiv">
+                    <div class="text-xl font-bold text-teal-400 flex items-center gap-2">
+                        <i data-lucide="power" class="w-5 h-5"></i> Status
+                    </div>
+                    <div class="text-lg font-semibold text-white ml-2">Ativo</div>
+                </div>
+            </div>
+
+            <div id="voltageChartContainer" class="bg-gray-800 p-6 rounded-2xl shadow-lg lg:col-span-1">
+                <h2 class="text-xl mb-4 font-semibold text-white">Tensão em tempo real (V)</h2>
+                <canvas id="voltageChart" height="150"></canvas>
+            </div>
         </div>
-        <div class="stats-container">
-            <h2>Estatísticas</h2>
-            <p><strong>Valor Atual:</strong> <span id="valorAtual"></span></p>
-            <p><strong>Média:</strong> <span id="media"></span></p>
-            <p><strong>Máximo:</strong> <span id="maximo"></span></p>
-            <p><strong>Mínimo:</strong> <span id="minimo"></span></p>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 indicator-grid animate-fade-in">
+            <div class="indicator-card bg-gray-800 p-4 rounded-2xl shadow-md flex flex-col justify-center items-center" data-icon="footprints" data-label="Passos" data-color="text-green-400" data-value="34" data-fill="50"></div>
+            <div class="indicator-card bg-gray-800 p-4 rounded-2xl shadow-md flex flex-col justify-center items-center" data-icon="thermometer" data-label="Temp" data-color="text-red-400" data-value="29°C" data-fill="58"></div>
+            <div class="indicator-card bg-gray-800 p-4 rounded-2xl shadow-md flex flex-col justify-center items-center" data-icon="clock" data-label="Tempo" data-color="text-blue-400" data-value="12min" data-fill="24"></div>
+            <div class="indicator-card bg-gray-800 p-4 rounded-2xl shadow-md flex flex-col justify-center items-center" data-icon="bolt" data-label="Energia" data-color="text-purple-400" data-value="3.4J" data-fill="34"></div>
+            <div class="indicator-card bg-gray-800 p-4 rounded-2xl shadow-md flex flex-col justify-center items-center" data-icon="activity" data-label="Potência" data-color="text-pink-400" data-value="1.2W" data-fill="12"></div>
+            <div class="indicator-card bg-gray-800 p-4 rounded-2xl shadow-md flex flex-col justify-center items-center" data-icon="target" data-label="Pressão" data-color="text-indigo-400" data-value="18N/m²" data-fill="18"></div>
+            <div class="indicator-card bg-gray-800 p-4 rounded-2xl shadow-md flex flex-col justify-center items-center" data-icon="radio" data-label="Freq" data-color="text-lime-400" data-value="0.9Hz" data-fill="9"></div>
+            <div class="indicator-card bg-gray-800 p-4 rounded-2xl shadow-md flex flex-col justify-center items-center" data-icon="vibrate" data-label="Vibração" data-color="text-orange-400" data-value="Alta" data-fill="90"></div>
         </div>
+
+        <div class="flex justify-center gap-4 mt-12">
+            <button class="bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-3 rounded-xl transition transform hover:scale-105 shadow-lg button-effect">Salvar</button>
+            <button class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-xl transition transform hover:scale-105 shadow-lg button-effect">Exportar</button>
+            <button class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-xl transition transform hover:scale-105 shadow-lg button-effect">Resetar</button>
         </div>
 
-    <script>
-        const ctxTensao = document.getElementById('tensaoChart').getContext('2d');
-        let tensaoChart;
-        let dadosTensao = [];
-        let labelsTempo = [];
-
-        function atualizarDashboard() {
-            fetch('/dados')
-                .then(response => response.json())
-                .then(data => {
-                    dadosTensao = data.dados;
-                    labelsTempo = Array.from(Array(dadosTensao.length).keys()); // Simples labels de tempo
-
-                    document.getElementById('valorAtual').textContent = dadosTensao[dadosTensao.length - 1] !== undefined ? dadosTensao[dadosTensao.length - 1].toFixed(2) : 'N/A';
-                    document.getElementById('media').textContent = dadosTensao.length > 0 ? (dadosTensao.reduce((a, b) => a + b, 0) / dadosTensao.length).toFixed(2) : 'N/A';
-                    document.getElementById('maximo').textContent = dadosTensao.length > 0 ? Math.max(...dadosTensao).toFixed(2) : 'N/A';
-                    document.getElementById('minimo').textContent = dadosTensao.length > 0 ? Math.min(...dadosTensao).toFixed(2) : 'N/A';
-
-                    if (tensaoChart) {
-                        tensaoChart.destroy();
-                    }
-
-                    tensaoChart = new Chart(ctxTensao, {
-                        type: 'line',
-                        data: {
-                            labels: labelsTempo,
-                            datasets: [{
-                                label: 'Tensão (Volts)',
-                                data: dadosTensao,
-                                borderColor: 'rgb(75, 192, 192)',
-                                tension: 0.1
-                            }]
-                        },
-                        options: {
-                            scales: {
-                                y: {
-                                    beginAtZero: true
-                                }
-                            }
-                        }
-                    });
-                })
-                .catch(error => console.error('Erro ao obter dados:', error));
-        }
-
-        setInterval(atualizarDashboard, 1000); // Atualizar a cada 1 segundo
-    </script>
+    </div>
+    <script src="script.js"></script> 
 </body>
+
 </html>
